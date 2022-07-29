@@ -6,12 +6,34 @@ cprefix = prefix
 background = "0"
 textcolor = "7"
 
+def loadStyle():
+    with open("style.txt", "r") as f:
+        global background, textcolor, prefix
+        read = f.read()
+        read = read.split()
+        background = read[0]
+        textcolor = read[1]
+        prefix = read[2]
+
+
 def refresh():
     global prefix, cprefix, background, textcolor
     os.system(f"color {background + textcolor}")
     prefix = cprefix
+    if os.path.isfile("style.txt"):
+        loadStyle()
+
+def saveStyle():
+    with open("style.txt", "w") as f:
+        toWrite = ""
+        toWrite = toWrite + background + " "
+        toWrite = toWrite + textcolor + " "
+        toWrite = toWrite + prefix
+        f.write(toWrite)
 
 refresh()
+if os.path.isfile("style.txt"):
+        loadStyle()
 
 print("Custom CMD by Wojtmic v1.0\n")
 
@@ -108,6 +130,8 @@ while True:
             elif cmdS[1] == "prefix":
                 if len(cmdS) > 2:
                     cprefix = cmdS[2]
+            elif cmdS[1] == "save":
+                saveStyle()
         else:
             print("Command style requires arguments.")
     else:
